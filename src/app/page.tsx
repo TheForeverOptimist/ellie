@@ -1,4 +1,5 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import Messages from "@/components/Messages";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight, SettingsIcon } from "lucide-react";
 import Image from "next/image";
@@ -19,14 +20,14 @@ export default function Home() {
 
         <SettingsIcon
           size={40}
-          className="p-2 m-2 rounded-full cursor-pointer bg-blue-500 text-black transition-all ease-in-out duration-150 hover:bg-blue-700 hover:text-white"
+          className="p-2 m-2 rounded-full cursor-pointer bg-blue-700 text-black transition-all ease-in-out duration-150 hover:bg-blue-700 hover:text-white"
         />
       </header>
 
       <form className="flex flex-col bg-black">
         <div className="flex-1 bg-gradient-to-b from-blue-500 to-black">
           <p>Hello</p>
-          {/* Messages */}
+          <Messages />
           
           </div>
         {/* Hidden Fields */}
