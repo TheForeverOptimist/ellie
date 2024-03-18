@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Messages from "@/components/Messages";
@@ -11,26 +10,24 @@ import Link from "next/link";
 import { useRef } from "react";
 
 export default function Home() {
-  const fileRef = useRef<HTMLInputElement | null>(null)
-  const submitButtonRef = useRef<HTMLButtonElement | null>(null)
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const submitButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const uploadAudio = (blob: Blob) => {
-    const url = URL.createObjectURL(blob);
-
-    const file = new File([blob], 'audio.webm', {type: mimeType})
+    const file = new File([blob], "audio.webm", { type: mimeType });
 
     //set the file as the value of the hidden file input field
     if (fileRef.current) {
-       const dataTransfer = new DataTransfer();
-       dataTransfer.items.add(file);
-       fileRef.current.files = dataTransfer.files;
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      fileRef.current.files = dataTransfer.files;
 
-       //simulate a click & submit the form
-       if (submitButtonRef.current) {
+      //simulate a click & submit the form
+      if (submitButtonRef.current) {
         submitButtonRef.current.click();
-       }
+      }
     }
-  }
+  };
 
   return (
     <main className="bg-black h-screen overscroll-y-auto">
@@ -49,13 +46,13 @@ export default function Home() {
         />
       </header>
 
-      <form className="flex flex-col bg-black">
+      <form action={formAction} className="flex flex-col bg-black">
         <div className="flex-1 bg-gradient-to-b from-blue-500 to-black">
           <p>Hello</p>
           <Messages />
         </div>
         {/* Hidden Fields */}
-        <input type="file" name='audio' hidden ref={fileRef} />
+        <input type="file" name="audio" hidden ref={fileRef} />
         <button type="submit" hidden ref={submitButtonRef}>
           Submit Audio
         </button>
