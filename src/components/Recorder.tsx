@@ -65,6 +65,17 @@ function Recorder({uploadAudio} :{uploadAudio: (blob:Blob) => void}) {
         setAudioChunks(localAudioChunks);
     }
 
+    const stopRecording = async () => {
+        if(mediaRecorder.current === null || pending) return;
+
+        setRecordingStatus("inactive");
+        mediaRecorder.current.stop();
+        mediaRecorder.current.onstop = () => {
+            const audioBlob = new Blob(audioChunks, {type: mimeType})
+            uploadAudio(audioBlob);
+            setAudioChunks([])
+        }    }
+
   return (
     <div className="flex items-center justify-center text-white">
       {!permission && (
@@ -86,6 +97,18 @@ function Recorder({uploadAudio} :{uploadAudio: (blob:Blob) => void}) {
           width={350}
           height={350}
           onClick={startRecording}
+          priority={true}
+          alt="Not Recording"
+          className="assistant cursor-pointer hover:scale-110 duration-150 transition-all ease-in-out"
+        />
+      )}
+
+      {recordingStatus === "recording" && (
+        <Image
+          src={activeIcon}
+          width={350}
+          height={350}
+          onClick={stopRecording}
           priority={true}
           alt="Not Recording"
           className="assistant cursor-pointer hover:scale-110 duration-150 transition-all ease-in-out"
