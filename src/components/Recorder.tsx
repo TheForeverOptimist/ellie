@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import activeIcon from "/img/active.gif";
@@ -8,73 +8,67 @@ import { useFormStatus } from "react-dom";
 
 export const mimeType = "audio/webm";
 
-function Recorder({uploadAudio} :{uploadAudio: (blob:Blob) => void}) {
-    const mediaRecorder = useRef<MediaRecorder | null>(null)
-    const {pending} = useFormStatus();
-    const [permission, setPermission] = useState(false)
-    const [stream, setStream] = useState<MediaStream | null>(null)
-    const [recordingStatus, setRecordingStatus] = useState("inactive");
-    const [audioChunks, setAudioChunks] = useState<Blob[]>([])
+function Recorder({ uploadAudio }: { uploadAudio: (blob: Blob) => void }) {
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const { pending } = useFormStatus();
+  const [permission, setPermission] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [recordingStatus, setRecordingStatus] = useState("inactive");
+  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
 
+  useEffect(() => {
+    getMicrophonePermission();
+  }, []);
 
-
-
-
-    useEffect(() => {
-        getMicrophonePermission()
-
-    }, [])
-
-
-
-    //we are going to check for the media recorder
-    const getMicrophonePermission = async() => {
-        if ("MediaRecorder" in window) {
-          try {
-            const streamData = await navigator.mediaDevices.getUserMedia({
-              audio: true,
-              video: false,
-            });
-            setPermission(true);
-            setStream(streamData);
-          } catch (err: any) {
-            alert(err.message);
-          }
-        } else {
-          alert("The MediaRecorder API is not supported in your browser");
-        }
+  //we are going to check for the media recorder
+  const getMicrophonePermission = async () => {
+    if ("MediaRecorder" in window) {
+      try {
+        const streamData = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: false,
+        });
+        setPermission(true);
+        setStream(streamData);
+      } catch (err: any) {
+        alert(err.message);
+      }
+    } else {
+      alert("The MediaRecorder API is not supported in your browser");
     }
+  };
 
-    const startRecording = async () => {
-        if(stream === null || pending) return;
+  const startRecording = async () => {
+    if (stream === null || pending) return;
 
-        setRecordingStatus("recording");
+    setRecordingStatus("recording");
 
-        // create a new media recorder instance using the stream
-        const media = new MediaRecorder(stream, {mimeType});
-        mediaRecorder.current = media;
-        mediaRecorder.current.start();
+    // create a new media recorder instance using the stream
+    const media = new MediaRecorder(stream, { mimeType });
+    mediaRecorder.current = media;
+    mediaRecorder.current.start();
 
-        let localAudioChunks: Blob[] = [];
-        mediaRecorder.current.ondataavailable = (event) => {
-            if (typeof event.data === "undefined") return;
-            if (event.data.size === 0) return;
-            
-            localAudioChunks.push(event.data);
-        };
-        setAudioChunks(localAudioChunks);
-    }
+    let localAudioChunks: Blob[] = [];
+    mediaRecorder.current.ondataavailable = (event) => {
+      if (typeof event.data === "undefined") return;
+      if (event.data.size === 0) return;
 
-    const stopRecording = async () => {
-        if(mediaRecorder.current === null || pending) return;
+      localAudioChunks.push(event.data);
+    };
+    setAudioChunks(localAudioChunks);
+  };
 
-        setRecordingStatus("inactive");
-        mediaRecorder.current.stop();
-        mediaRecorder.current.onstop = () => {
-            const audioBlob = new Blob(audioChunks, {type: mimeType})
-            uploadAudio(audioBlob);
-            setAudioChunks([])
-        }    }
+  const stopRecording = async () => {
+    if (mediaRecorder.current === null || pending) return;
+
+    setRecordingStatus("inactive");
+    mediaRecorder.current.stop();
+    mediaRecorder.current.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: mimeType });
+      uploadAudio(audioBlob);
+      setAudioChunks([]);
+    };
+  };
 
   return (
     <div className="flex items-center justify-center text-white">
