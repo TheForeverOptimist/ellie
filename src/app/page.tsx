@@ -66,10 +66,10 @@ export default function Home() {
       <header className="flex justify-between fixed w-full top-0 text-white ">
         <Image
           alt="Logo"
-          src="https://i.imgur.com/MCHWJZS.png"
-          height={50}
-          width={50}
-          className="object-contain"
+          src="https://cdn.discordapp.com/attachments/1067565429771481131/1219543327477862440/ellie-2.png?ex=660baf3b&is=65f93a3b&hm=382fef4cf655b3ef4e2fc450a50796e7d8d2823e0669252ff0ec24699f21d686&"
+          height={75}
+          width={75}
+          className="object-contain rounded-full p-2 m-2"
         />
 
         <SettingsIcon
@@ -92,14 +92,8 @@ export default function Home() {
           <Recorder uploadAudio={uploadAudio} />
           <div>
             {/* Voice Synthesizer -- output for Assistant Voice */}
-            <VoiceSynthesizer
-            state={state}
-            displaySettings={displaySettings}
-            
-            />
-            
-            
-            </div>
+            <VoiceSynthesizer state={state} displaySettings={displaySettings} />
+          </div>
         </div>
       </form>
     </main>
