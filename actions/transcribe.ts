@@ -1,12 +1,22 @@
 'use server'
 
+import {
+    AzureKeyCredential,
+    ChatRequestMessage,
+    OpenAIClient
+} from "@azure/openai"
 
-import { OpenAIWhisperAudio } from "langchain/document_loaders/fs/openai_whisper_audio";
+async function transcript(prevState: any, formData: FormData){
+    console.log("PREVIOUS STATE:", prevState)
 
-const filePath = ''
+    if(
+        process.env.AZURE_API_KEY === undefined ||
+        process.env.AZURE_ENDPOINT === undefined ||
+        process.env.AZURE_DEPLOYMENT_NAME === undefined ||
+        process.env.AZURE_DEPLOYMENT_COMPLETIONS_NAME === undefined
+    ){
+        console.error("Azure credentials")
+    }
+}
 
-const loader = new OpenAIWhisperAudio(filePath);
-
-const docs = await loader.load();
-
-console.log(docs);
+export default transcript

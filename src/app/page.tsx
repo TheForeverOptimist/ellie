@@ -8,10 +8,20 @@ import { ArrowRight, SettingsIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
+import { useFormState } from "react-dom";
+import transcript from "../../actions/transcribe";
+
+const initialState = {
+  sender: "",
+  response: "",
+  id: "",
+}
+
 
 export default function Home() {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [state, formAction] = useFormState(transcript, initialState);
 
   const uploadAudio = (blob: Blob) => {
     const file = new File([blob], "audio.webm", { type: mimeType });
