@@ -9,7 +9,7 @@ function LoadingPrompt() {
   return (
     pending && (
       <p className="message ml-auto">
-        <BeatLoader />
+        <BeatLoader color='white'/>
       </p>
     )
   );

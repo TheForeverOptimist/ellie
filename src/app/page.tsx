@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import transcript from "../../actions/transcribe";
+import VoiceSynthesizer from "@/components/VoiceSynthesizer";
 
 const initialState = {
   sender: "",
@@ -28,6 +29,7 @@ export default function Home() {
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
   const [state, formAction] = useFormState(transcript, initialState);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [displaySettings, setDisplaySettings] = useState(false)
 
   //create a useEffect for updating the messages (server action)
   useEffect(() => {
@@ -72,6 +74,7 @@ export default function Home() {
 
         <SettingsIcon
           size={40}
+          onClick={() => setDisplaySettings(!displaySettings)}
           className="p-2 m-2 rounded-full cursor-pointer bg-blue-700 text-black transition-all ease-in-out duration-150 hover:bg-blue-700 hover:text-white"
         />
       </header>
@@ -87,7 +90,16 @@ export default function Home() {
         </button>
         <div className="fixed bottom-0 w-full overflow-hidden bg-black rounded-t-3xl">
           <Recorder uploadAudio={uploadAudio} />
-          <div>{/* Voice Synthesizer -- output for Assistant Voice */}</div>
+          <div>
+            {/* Voice Synthesizer -- output for Assistant Voice */}
+            <VoiceSynthesizer
+            state={state}
+            displaySettings={displaySettings}
+            
+            />
+            
+            
+            </div>
         </div>
       </form>
     </main>
