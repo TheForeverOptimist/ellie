@@ -15,6 +15,24 @@ function Messages({messages}: MessageProps) {
           <ChevronDownCircle size={64} className="animate-bounce text-gray-500" />
         </div>
       )}
+      <div className="p-5">
+        {messages.map(message => (
+          <div key={message.id}>
+            {/* reciever */}
+            <div className="pr-48">
+              <p className="message bg-gray-800 rounded-bl-none">{message.response}</p>
+            </div>
+            {/* sender */}
+            <div className="pl-48">
+              <p className="message text-left ml-auto rounded-br-none">
+                {message.sender}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+
     </div>
   )
 }
