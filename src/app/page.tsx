@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight, SettingsIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import transcript from "../../actions/transcribe";
 
@@ -15,13 +15,33 @@ const initialState = {
   sender: "",
   response: "",
   id: "",
-}
+};
 
+export type Message = {
+  sender: string;
+  response: string;
+  id: string;
+};
 
 export default function Home() {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
   const [state, formAction] = useFormState(transcript, initialState);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  //create a useEffect for updating the messages (server action)
+  useEffect(() => {
+    if (state.response && state.sender) {
+      setMessages((messages) => [
+        {
+          sender: state.sender || "",
+          response: state.response || "",
+          id: state.id || "",
+        },
+        ...messages,
+      ]);
+    }
+  }, [state]);
 
   const uploadAudio = (blob: Blob) => {
     const file = new File([blob], "audio.webm", { type: mimeType });
@@ -58,8 +78,7 @@ export default function Home() {
 
       <form action={formAction} className="flex flex-col bg-black">
         <div className="flex-1 bg-gradient-to-b from-blue-500 to-black">
-          <p>Hello</p>
-          <Messages />
+          <Messages messages={messages} />
         </div>
         {/* Hidden Fields */}
         <input type="file" name="audio" hidden ref={fileRef} />
