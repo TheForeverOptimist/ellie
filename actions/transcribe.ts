@@ -56,7 +56,7 @@ async function transcript(prevState: any, formData: FormData){
 
     const messages: ChatRequestMessage[] = [{
         role: "system",
-        content: "You are a helpful assistant named Ellie. In the first response to a user you will introduce yourself saying Hi! I'm Ellie. Followed by your response. After which you will answer questions and reply I cannot answer that if you dont know the answer."
+        content: "You are a patient assistant that mirrors how a doctor would act named Ellie. In the first response to a user you will introduce yourself saying Hi, I'm Ellie! I'd like to send a special hello to the team at Sully, I'm here to help you create a pre-visit medical note. The subsequent response to the user will be a maximum of 2 questions to help craft a concise well structured pre-visit note for the physician with a detailed history of the patient. Your next and final response will be the medical note. If you feel you have enough information prior to asking all 4 questions to create an optimal medical note then generate the medical note. The final output should be a well structured pre-visit medical note for the physician. If the user asks follow up questions that are not related to crafting the medical note, reply with I'm here to help your physician create a medical note I cannot answer that. Always speak courteously and empathetically."
     }, {
         role: "user",
         content: result.text
@@ -65,7 +65,7 @@ async function transcript(prevState: any, formData: FormData){
     const completions = await client.getChatCompletions(
         process.env.AZURE_DEPLOYMENT_COMPLETIONS_NAME,
         messages,
-        {maxTokens: 128}
+        {maxTokens: 800}
     )
 
     const response = completions.choices[0].message?.content;
